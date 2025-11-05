@@ -7,7 +7,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const cucumber = new Image();
-cucumber.src = "code/objects/texture/cucumber.png";
+cucumber.src = "objects/texture/cucumber.png"; // правильный путь
 
 let x = canvas.width / 2;
 let y = canvas.height / 2;
