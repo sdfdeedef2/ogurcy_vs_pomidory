@@ -1,38 +1,17 @@
-const socket = io("http://localhost:3000");
+const canvas = document.createElement("canvas");
+document.body.appendChild(canvas);
+const ctx = canvas.getContext("2d");
 
-let canvas = document.getElementById("game");
-let ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-let players = {};
-let myId = null;
+const img = new Image();
+img.src = "objects/texture/cucumber.png";
 
-socket.on("connect", () => myId = socket.id);
+img.onload = () => {
+  const x = canvas.width / 2 - img.width / 2;
+  const y = canvas.height / 2 - img.height / 2;
+  ctx.drawImage(img, x, y);
+};
 
-socket.on("update", data => players = data);
-
-document.addEventListener("keydown", e => {
-  if (!myId) return;
-  let p = players[myId];
-  if (!p) return;
-
-  if (e.key === "w") p.y -= 5;
-  if (e.key === "s") p.y += 5;
-  if (e.key === "a") p.x -= 5;
-  if (e.key === "d") p.x += 5;
-
-  socket.emit("move", p);
-});
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let id in players) {
-    let p = players[id];
-    ctx.fillStyle = id === myId ? "green" : "red";
-    ctx.fillRect(p.x - 25, p.y - 25, 50, 50);
-  }
-  requestAnimationFrame(draw);
-}
-
-draw();
+document.body.style.background = "#555";
